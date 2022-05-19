@@ -22,7 +22,7 @@ data: a list of items to include or the data/code for action ... url.
 //   (e.g. \').
 JPSLMenus.tsturl = {'type': 'url',
              'title': 'Gutow Homesite',
-             'data': "https://gutow.cms.uwosh.edu/Gutow"};
+             'data': "https://cms.gutow.uwosh.edu/Gutow"};
 JPSLMenus.tstaction = {'type':'action',
             'title': 'alert',
             'data': "alert(\'This is an alert\')"};
@@ -77,8 +77,11 @@ JPSLMenus.addaction = function(currelem, menuaction){
     alert('Entering addaction().');
     }
     var templi = document.createElement('li');
-    templi.setAttribute('onclick',menuaction['data']);
-    templi.innerHTML = menuaction['title'];
+    var tempanchor = document.createElement('a');
+    tempanchor.setAttribute('href','#');
+    tempanchor.setAttribute('onclick',menuaction['data']);
+    tempanchor.innerHTML = menuaction['title'];
+    templi.appendChild(tempanchor);
     currelem.appendChild(templi);
 };
 
@@ -96,16 +99,19 @@ JPSLMenus.addsnippet = function(currelem, menusnippet){
         alert('Entering addsnippet().');
     };
     var templi = document.createElement('li');
-    var text = '';
+    var text = '\'';
     if (JPSLMenus.debug){
         alert(typeof(menusnippet['data']));
     };
     for(var i = 0; i<menusnippet['data'].length; ++i){
             text += JPSLMenus.cleanstr(menusnippet['data'][i])+'\\n';
     };
-    templi.setAttribute('onclick','JPSLMenus.insert_snippet('
-        +text+')');
-    templi.innerHTML = menusnippet['title'];
+    var tempanchor = document.createElement('a');
+    tempanchor.setAttribute('href','#');
+    tempanchor.setAttribute('onclick','JPSLMenus.insert_snippet('
+        +text+'\')');
+    tempanchor.innerHTML = menusnippet['title'];
+    templi.appendChild(tempanchor);
     currelem.appendChild(templi);
 };
 
@@ -113,6 +119,15 @@ JPSLMenus.addcomputedsnippet = function(currelem, menusnippet){
     if (JPSLMenus.debug){
     alert('Entering addcomputedsnippet().');
     }
+    var templi = document.createElement('li');
+    var text = menusnippet['data'];
+    var tempanchor = document.createElement('a');
+    tempanchor.setAttribute('href','#');
+    tempanchor.setAttribute('onclick','JPSLMenus.insert_snippet('
+        +text+'\')');
+    tempanchor.innerHTML = menusnippet['title'];
+    templi.appendChild(tempanchor);
+    currelem.appendChild(templi);
 };
 
 JPSLMenus.addurl = function(currelem, menuurl){
@@ -179,4 +194,7 @@ JPSLMenus.build = function(menu){
     if (JPSLMenus.debug){
         alert(JPSLMenus.tempmenu.innerHTML);
     };
+    var menus = document.getElementById('menus');
+    var navmenus = menus. getElementsByClassName('nav navbar-nav')
+    navmenus[0].appendChild(JPSLMenus.tempmenu);
 };
