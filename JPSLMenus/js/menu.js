@@ -29,7 +29,7 @@ JPSLMenus.tstaction = {'type':'action',
 JPSLMenus.tstsnippet = {'type': 'snippet',
              'title': 'Python Snippet',
              'data': ["tststr = \'A string to print\'",
-                      "print(teststr)"]};
+                      "print(tststr)"]};
 JPSLMenus.tstcompsnip = {'type': 'computedsnippet',
              'title': 'Computed Snippet',
              'data': "JPSLMenus.computedsnipexample()"};
@@ -124,7 +124,7 @@ JPSLMenus.addcomputedsnippet = function(currelem, menusnippet){
     var tempanchor = document.createElement('a');
     tempanchor.setAttribute('href','#');
     tempanchor.setAttribute('onclick','JPSLMenus.insert_snippet('
-        +text+'\')');
+        +text+')');
     tempanchor.innerHTML = menusnippet['title'];
     templi.appendChild(tempanchor);
     currelem.appendChild(templi);
