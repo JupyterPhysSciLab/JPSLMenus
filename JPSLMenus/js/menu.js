@@ -24,17 +24,19 @@ JPSLMenus.tsturl = {'type': 'url',
              'title': 'Gutow Homesite',
              'data': "https://cms.gutow.uwosh.edu/Gutow"};
 JPSLMenus.tstaction = {'type':'action',
-            'title': 'alert',
+            'title': 'An action\n (javascript call)',
             'data': "alert(\'This is an alert\')"};
 JPSLMenus.tstsnippet = {'type': 'snippet',
              'title': 'Python Snippet',
+             //Use double quotes around each line of code.
              'data': ["tststr = \'A string to print\'",
                       "print(tststr)"]};
 JPSLMenus.tstcompsnip = {'type': 'computedsnippet',
              'title': 'Computed Snippet',
+             //Use double quotes around the line of valid javascript.
              'data': "JPSLMenus.computedsnipexample()"};
 JPSLMenus.tstsubmenu = {'type': 'submenu',
-             'title': 'sub1',
+             'title': 'Snippets',
              'data': [JPSLMenus.tstsnippet,JPSLMenus.tstcompsnip]};
 JPSLMenus.menu = {'type': 'menu',
             'title': 'Test Menu',
@@ -43,14 +45,13 @@ JPSLMenus.menu = {'type': 'menu',
 
 // Example computed snippet code
 JPSLMenus.computedsnipexample = function(){
-    var snippetstr = '# This is being inserted into the currently selected ';
-    snippetstr +='cell, which is number ';
+    var snippetstr = '# This is a ';
     var currentcell = Jupyter.notebook.get_selected_cell();
-    snippetstr += currentcell.input_prompt_number;
+    snippetstr += currentcell.cell_type+' cell.\n# The cell id is ';
+    snippetstr += currentcell.cell_id+'.';
     return (snippetstr);
 };
 
-JPSLMenus.tempmenu = document.createElement('li');
 JPSLMenus.debug = false;
 
 JPSLMenus.addsubmenu = function(currelem, submenu){
@@ -136,8 +137,12 @@ JPSLMenus.addurl = function(currelem, menuurl){
     }
     var templi = document.createElement('li');
     var tempanchor = document.createElement('a');
+    tempanchor.setAttribute('target','_blank');
     tempanchor.setAttribute('href',menuurl['data']);
+    var icon = document.createElement('i');
+    icon.classList.add('fa', 'fa-external-link', 'menu-icon', 'pull-right');
     tempanchor.innerHTML = menuurl['title'];
+    tempanchor.appendChild(icon);
     templi.appendChild(tempanchor);
     currelem.appendChild(templi);
 };
@@ -175,6 +180,7 @@ JPSLMenus.build = function(menu){
         console.log('JPSLMenus.build was not passed a proper menu dictionary.');
         return;
     };
+    JPSLMenus.tempmenu = document.createElement('li');
     JPSLMenus.tempmenu.classList.add("dropdown");
     JPSLMenus.tempmenu.id = menu['title'].replaceAll(/\s\n\.;\(\)\[\]\:/g,'_');
     var tempelem = document.createElement('a');
@@ -195,6 +201,6 @@ JPSLMenus.build = function(menu){
         alert(JPSLMenus.tempmenu.innerHTML);
     };
     var menus = document.getElementById('menus');
-    var navmenus = menus. getElementsByClassName('nav navbar-nav')
+    var navmenus = menus.getElementsByClassName('nav navbar-nav')
     navmenus[0].appendChild(JPSLMenus.tempmenu);
 };
