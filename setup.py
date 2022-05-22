@@ -5,7 +5,7 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="JPSLMenus",
-    version="0.1.0",
+    version="0.5.0",
     description="Tools to build menus",
     long_description=long_description,
     long_description_content_type="text/markdown",
