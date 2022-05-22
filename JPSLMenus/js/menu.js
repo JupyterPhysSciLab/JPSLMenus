@@ -1,47 +1,68 @@
-// Jupyter Notebook Utilities
-let JPSLMenus = new Object();
+/* Utilities to generate hierarchical menus in Jupyter from within a
+    notebook. These menus will only appear when running the notebook they
+    are defined in.
+    Jonthan Gutow <gutow@uwosh.edu>
+    GIT: https://github.com/JupyterPhysSciLab/JPSLMenus
+*/
+
 /*
-Initialization
+Initialization (trying to limit namespace collisions)
 */
-/*Define the menu structure
-list object with sublists
-menu[submenu1, submenu2...[menuitem,...]]
-Items have:
-title: string that will appear in the menu or as its title
-type; 'menu', 'submenu', 'action', 'snippet', 'computedsnippet' or 'url'
-data: a list of items to include or the data/code for action ... url.
+let JPSLMenus = new Object();
+
+/*
+Debugging (set to true to get debug alerts)
+*/
+JPSLMenus.debug = false;
+
+/*
+Menu item template:
+   var item = {'type':'url|action|snippet|computedsnippet|submenu|menu',
+                'title':'String that will appear in menu',
+                'data': \\depends on type
+                   \\ url: "string url"
+                   \\ action: "single line of valid javascript"
+                   \\ snippet: ["code line 1","code line 2"...]
+                   \\ computedsnippet: "single line of valid javascript"
+                   \\    that returns a string representation of the
+                   \\    snippet to insert.
+                   \\ submenu: [item1, item2...] items can be submenus.
+                   \\ menu: [item1, item2...] items can be submenus.
+                };
+
+NOTE ABOUT QUOTATION MARKS: Each line of snippet text should
+   be between double quotes (e.g. "). If you want quotes to
+   define a string within your snippet use escaped single quotes
+   (e.g. \').
 */
 
-// Example menu items.
-// To use for testing: `JPSLMenus.build(JPSLMenus.menu)`.
-// If you want debug alerts set `JPSLMenus.debug = true;` first.
+// Example of a menu creation function (see the Readme on Github for more
+//  information).
+JPSLMenus.testMenu = function(){
+    var tsturl = {'type': 'url',
+                 'title': 'Gutow Homesite',
+                 'data': "https://cms.gutow.uwosh.edu/Gutow"};
+    var tstaction = {'type':'action',
+                'title': 'An action\n (javascript call)',
+                'data': "alert(\'This is an alert\')"};
+    var tstsnippet = {'type': 'snippet',
+                 'title': 'Python Snippet',
+                 //Use double quotes around each line of code.
+                 'data': ["tststr = \'A string to print\'",
+                          "print(tststr)"]};
+    var tstcompsnip = {'type': 'computedsnippet',
+                 'title': 'Computed Snippet',
+                 //Use double quotes around the line of valid javascript.
+                 'data': "JPSLMenus.computedsnipexample()"};
+    var tstsubmenu = {'type': 'submenu',
+                 'title': 'Snippets',
+                 'data': [tstsnippet, tstcompsnip]};
+    var menu = {'type': 'menu',
+                'title': 'Test Menu',
+                'data': [tsturl, tstsubmenu, tstaction]};
+    JPSLMenus.build(menu);
+};
 
-// NOTE ABOUT QUOTATION MARKS: Each line of snippet text should
-//   be between double quotes (e.g. "). If you want quotes to
-//   define a string within your snippet use escaped single quotes
-//   (e.g. \').
-JPSLMenus.tsturl = {'type': 'url',
-             'title': 'Gutow Homesite',
-             'data': "https://cms.gutow.uwosh.edu/Gutow"};
-JPSLMenus.tstaction = {'type':'action',
-            'title': 'An action\n (javascript call)',
-            'data': "alert(\'This is an alert\')"};
-JPSLMenus.tstsnippet = {'type': 'snippet',
-             'title': 'Python Snippet',
-             //Use double quotes around each line of code.
-             'data': ["tststr = \'A string to print\'",
-                      "print(tststr)"]};
-JPSLMenus.tstcompsnip = {'type': 'computedsnippet',
-             'title': 'Computed Snippet',
-             //Use double quotes around the line of valid javascript.
-             'data': "JPSLMenus.computedsnipexample()"};
-JPSLMenus.tstsubmenu = {'type': 'submenu',
-             'title': 'Snippets',
-             'data': [JPSLMenus.tstsnippet,JPSLMenus.tstcompsnip]};
-JPSLMenus.menu = {'type': 'menu',
-            'title': 'Test Menu',
-            'data': [JPSLMenus.tsturl, JPSLMenus.tstsubmenu, JPSLMenus
-            .tstaction]};
 
 // Example computed snippet code
 JPSLMenus.computedsnipexample = function(){
@@ -51,8 +72,6 @@ JPSLMenus.computedsnipexample = function(){
     snippetstr += currentcell.cell_id+'.';
     return (snippetstr);
 };
-
-JPSLMenus.debug = false;
 
 JPSLMenus.addsubmenu = function(currelem, submenu){
     if (JPSLMenus.debug){
