@@ -201,7 +201,9 @@ JPSLMenus.build = function(menu){
     };
     JPSLMenus.tempmenu = document.createElement('li');
     JPSLMenus.tempmenu.classList.add("dropdown");
-    JPSLMenus.tempmenu.id = menu['title'].replaceAll(/\s\n\.;\(\)\[\]\:/g,'_');
+    JPSLMenus.tempmenu.id = menu['title'].replaceAll(' ','_').
+        replaceAll('\(','_').replaceAll('\)','_').replaceAll('\[','_').
+        replaceAll('\]','_').replaceAll('\:','_');
     var tempelem = document.createElement('a');
     tempelem.classList.add('dropdown-toggle');
     tempelem.setAttribute('href','#');

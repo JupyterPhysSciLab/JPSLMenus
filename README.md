@@ -89,7 +89,7 @@ possible to create a menu on-the-fly from javascript in a code cell
    suggested.
    ```
    import JPSLMenus # This will embed the javascript menu resources in the output
-              #    of the cell in which you import your module.
+                    #    of the cell in which you import your module.
    ######
    # Install your js files
    ######
