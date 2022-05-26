@@ -5,11 +5,11 @@ with open("README.md", "r") as f:
 
 setuptools.setup(
     name="JPSLMenus",
-    version="0.5.0",
+    version="0.5.0rc0",
     description="Tools to build menus",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="#",
+    url="https://github.com/JupyterPhysSciLab/JPSLMenus",
     author="Jonathan Gutow",
     author_email="gutow@uwosh.edu",
     license="GPL-3.0+",
